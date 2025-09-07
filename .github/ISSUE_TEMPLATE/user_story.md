@@ -16,30 +16,26 @@ _As a [user role], I want [feature/goal], so that [reason]._
 ## Admin User Stories
 
 1. As an admin, I want to log into the portal with my username and password, so I can manage the platform securely
-
 Acceptance Criteria:
 TBD
-
 Priority: High
 
-3. As an Admin, I want to log out of the portal, so I can protect system access
-
+2. As an Admin, I want to log out of the portal, so I can protect system access
 Acceptance criteria:
 TBD
-
 Priority: Medium
 
-5. As an Admin, I want to add doctors to the porta
+3. As an Admin, I want to add doctors to the porta
 Acceptance Criteria:
 TBD
 Priority: Low
 
-6. As an Admin, I want to delete doctor's profile from the portal
+4. As an Admin, I want to delete doctor's profile from the portal
 Acceptance Criteria:
 TBD
 Priority: Low
 
-7. As an Admin, I want to run a stored procedure in MySQL CLI, so I can get the number of appointments per month and track usage statistics
+5. As an Admin, I want to run a stored procedure in MySQL CLI, so I can get the number of appointments per month and track usage statistics
 Acceptance Criteria:
 TBD
 Priority: Low
