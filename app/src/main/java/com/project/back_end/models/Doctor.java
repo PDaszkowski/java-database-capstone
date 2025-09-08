@@ -75,6 +75,7 @@ public class Doctor {
         return this.phone;
     }
 
+    @ElementCollection
     public List<String> getAvailableTimes()
     {
         return this.availableTimes;
