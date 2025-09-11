@@ -9,9 +9,7 @@ export async function patientSignup(data) {
     const response = await fetch(`${PATIENT_API}`,
       {
         method: "POST",
-        headers: {
-          "Content-type": "application/json"
-        },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(data)
       }
     );

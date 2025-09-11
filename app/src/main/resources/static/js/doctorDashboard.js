@@ -1,3 +1,59 @@
+import { getAllAppointments } from "./services/appointmentRecordService";
+import { createPatientRow } from "./components/patientRows";
+import { renderContent } from "./render.js";
+
+const tableBody = document.getElementById("patientTableBody");
+let selectedDate = new Date().toISOString().split("T")[0];
+const token = localStorage.getItem("token");
+let patientName = null;
+
+document.getElementById("searchBar").addEventListener("input", (event) => {
+  const value = event.target.value.trim();
+  patientName = value !== "" ? value : "null";
+  loadAppointments();
+});
+
+document.getElementById("todayButton").addEventListener("click", () => {
+  selectedDate = new Date().toISOString().split("T")[0];
+  document.getElementById("datePicker").value = selectedDate;
+  loadAppointments();
+});
+
+document.getElementById("datePicker").addEventListener("change", (event) => {
+  selectedDate = event.target.value;
+  loadAppointments();
+})
+
+async function loadAppointments() {
+  try{
+    const appointments = await getAllAppointments(selectedDate, patientName, token);
+    tableBody.innerHTML = "";
+    if(!appointments || appointments.length === 0)
+    {
+      tableBody.innerHTML = `<tr><td colspan="4">No Appointments found for today.</td></tr>`;
+      return;
+    }
+
+    appointments.forEach(app => {
+      const patient = {
+        id: app.patientId,
+        name: app.name,
+        phone: app.phone,
+        email: app.email
+      };
+      tableBody.appendChild(createPatientRow(patient, app));
+    });
+  }
+  catch (error){
+    console.error("Error loading appointments:" ,error);
+    tableBody.innerHTML = `<tr><td colspan="4">Error loading appointments. Try again later.</td></tr>`;
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () =>{
+  renderContent();
+  loadAppointments();
+})
 /*
   Import getAllAppointments to fetch appointments from the backend
   Import createPatientRow to generate a table row for each patient appointment
