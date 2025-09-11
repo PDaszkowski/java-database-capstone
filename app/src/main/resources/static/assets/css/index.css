@@ -1,3 +1,188 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+h2{
+  font-size: 48px;
+  margin-bottom: 50px;
+  font-family: 'Alegreya', 'Roboto', sans-serif;
+  color: #003e3e;
+  font-weight: bold;
+}
+
+.main-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  padding: 40px;
+  text-align: center;
+
+  background-image: url('../images/defineRole/index.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+button{
+  background-color: #015c5d;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 12px;
+  width: 200px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+button:hover{
+  background-color: #A62B1F;
+}
+
+.dashboard-btn {
+    background-color: #015c5d;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    width: 200px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-btn:hover {
+    background-color: #003e3e;
+}
+
+#modal {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); 
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#modal-body {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Close button */
+#closeModal {
+    background-color: #A62B1F;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease;
+}
+
+#closeModal:hover {
+    background-color: #003e3e;
+}
+
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: #015c5d;
+  color: white;
+}
+
+.header .logo{
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.header nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.header nav a:hover {
+    color: #A62B1F;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #003e3e;
+    color: white;
+    flex-wrap: wrap; 
+}
+
+input.input-field,
+select.select-dropdown {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin: 10px 0;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input.input-field:focus,
+select.select-dropdown:focus {
+    border-color: #015c5d;
+    box-shadow: 0 0 5px rgba(1,92,93,0.5);
+}
+
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+.checkbox-group label {
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
 /* this is the style sheet file for index.htlm  */
 
 /* 

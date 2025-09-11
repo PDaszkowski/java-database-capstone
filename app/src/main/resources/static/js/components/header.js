@@ -1,3 +1,109 @@
+function renderHeader()
+{
+  const headerDiv = document.getElementById("header");
+
+    if (window.location.pathname.endsWith("/")) {
+      localStorage.removeItem("userRole");
+      headerDiv.innerHTML = `
+        <header class="header">
+          <div class="logo-section">
+            <img src="../assets/images/logo/logo.png" alt="Hospital CRM Logo" class="logo-img">
+            <span class="logo-title">Hospital CMS</span>
+          </div>
+        </header>`;
+      return;
+   }
+   const role = localStorage.getItem("userRole");
+   const token = localStorage.getItem("token");
+   let headerContent = `<header class="header">
+         <div class="logo-section">
+           <img src="../assets/images/logo/logo.png" alt="Hospital CRM Logo" class="logo-img">
+           <span class="logo-title">Hospital CMS</span>
+         </div>
+         <nav>`;
+
+  if ((role == "loggedPatient" || role == "admin" || role == "doctor") && !token) {
+    localStorage.removeItem("userRole");
+    alert("Session expired or invalid login. Please log in again.");
+    window.location.href = "/";
+    return;
+  } 
+  else if (role === "admin") {
+    headerContent += `
+      <button id="addDocBtn" class="adminBtn">Add Doctor</button>
+      <button id="logoutAdmin" class="adminBtn">Logout</button>`;
+  } 
+  else if (role === "doctor") {
+    headerContent += `
+      <button id="homeDoctor" class="adminBtn">Home</button>
+      <button id="logoutDoctor" class="adminBtn">Logout</button>`;
+  } 
+  else if (role === "patient") {
+    headerContent += `
+      <button id="patientLogin" class="adminBtn">Login</button>
+      <button id="patientSignup" class="adminBtn">Sign Up</button>`;
+  } 
+  else if (role === "loggedPatient") {
+    headerContent += `
+      <button id="homePatient" class="adminBtn">Home</button>
+      <button id="patientAppointments" class="adminBtn">Appointments</button>
+      <button id="logoutPatient" class="adminBtn">Logout</button>`;
+  }
+
+
+    headerContent += `</nav></header>`;
+    headerDiv.innerHTML = headerContent;
+    attachHeaderButtonListeners();
+
+}
+
+function attachHeaderButtonListeners()
+{
+    if (document.getElementById("addDocBtn")) {
+    document.getElementById("addDocBtn").addEventListener("click", () => openModal('addDoctor'));
+  }
+  if (document.getElementById("logoutAdmin")) {
+    document.getElementById("logoutAdmin").addEventListener("click", logout);
+  }
+  if (document.getElementById("homeDoctor")) {
+    document.getElementById("homeDoctor").addEventListener("click", () => selectRole('doctor'));
+  }
+  if (document.getElementById("logoutDoctor")) {
+    document.getElementById("logoutDoctor").addEventListener("click", logout);
+  }
+  if (document.getElementById("patientLogin")) {
+    document.getElementById("patientLogin").addEventListener("click", () => openModal('patientLogin'));
+  }
+  if (document.getElementById("patientSignup")) {
+    document.getElementById("patientSignup").addEventListener("click", () => openModal('patientSignup'));
+  }
+  if (document.getElementById("homePatient")) {
+    document.getElementById("homePatient").addEventListener("click", () => window.location.href='/pages/loggedPatientDashboard.html');
+  }
+  if (document.getElementById("patientAppointments")) {
+    document.getElementById("patientAppointments").addEventListener("click", () => window.location.href='/pages/patientAppointments.html');
+  }
+  if (document.getElementById("logoutPatient")) {
+    document.getElementById("logoutPatient").addEventListener("click", logoutPatient);
+  }
+}
+
+function logout() {
+  localStorage.removeItem("userRole");
+  localStorage.removeItem("token");
+  window.location.href = "/";
+}
+
+function logoutPatient() {
+  localStorage.removeItem("token");
+  localStorage.setItem("userRole", "patient");
+  window.location.href = "/pages/patientDashboard.html";
+}
+
+// Wywołanie renderHeader po załadowaniu strony
+document.addEventListener("DOMContentLoaded", renderHeader);
+
+
 /*
   Step-by-Step Explanation of Header Section Rendering
 

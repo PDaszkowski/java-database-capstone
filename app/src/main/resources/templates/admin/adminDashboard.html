@@ -1,3 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" th:href="@{/assets/images/logo/logo.png}"/>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/assets/css/adminDashboard.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <script th:src="@{/js/render.js}" defer></script>
+    <script th:src="@{/js/util.js}" defer></script>
+    <script th:src="@{/js/components/header.js}" defer></script>
+    <script th:src="@{/js/components/footer.js}" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <div id="header"></div>
+            <main class="main-content">
+                <h2>Admin Dashboard</h2>
+                <input type="text" id="searchBar" placeholder="Search by doctor name"/>
+                <div class="filter-wrapper">
+                    <select id="filterTime">
+                        <option value="">Select time</option>
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+
+                    <select id="filterSpeciality">
+                        <option value="">Select speciality</option>
+                        <option value="Cardiologist">Cardiologist</option>
+                        <option value="Neurologist">Neurologist</option>
+                        <option value="Orthopedist">Orthopedist</option>
+                        <option value="Pediatrician">Pediatrician</option>
+                        <option value="Dermatologist">Dermatologist</option>
+                    </select>
+                </div>
+                <div id="content"></div>
+            </main>
+            <div id="footer"></div>
+         </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <span id="closeModal" class="close">&times;</span>
+        <div id="modal-body"></div>
+    </div>
+
+    <script type="module" src="../js/services/adminDashboard.js" defer></script>
+    <script type="module" src="../js/components/doctorCard.js" defer></script>
+</body>
+</html>
+
+
 <!-- adminDashboard.html -->
 
 <!-- 
