@@ -19,10 +19,27 @@ function selectRole(role) {
 }
 
 
-export function renderContent() {
+function renderContent() {
   const role = getRole();
   if (!role) {
     window.location.href = "/"; // if no role, send to role selection page
     return;
   }
 }
+
+window.selectRole = function(role) {
+  setRole(role);
+  const token = localStorage.getItem('token');
+  
+  if (role === "Admin") { // Uwaga: wielkość liter musi się zgadzać!
+    if (token) {
+      window.location.href = `/adminDashboard/${token}`;
+    }
+  } else if (role === "Patient") {
+    window.location.href = "/pages/patientDashboard.html";
+  } else if (role === "Doctor") {
+    if (token) {
+      window.location.href = `/doctorDashboard/${token}`;
+    }
+  }
+};

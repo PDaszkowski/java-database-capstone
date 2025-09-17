@@ -1,6 +1,31 @@
 package com.project.back_end.repo;
 
-public interface DoctorRepository {
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.project.back_end.models.Doctor;
+
+@Repository
+public interface DoctorRepository extends JpaRepository<Doctor, Long>{
+
+   Doctor findByEmail(String email);
+
+   @Query("Select d from Doctor d " +
+         "where d.name like concat('%', :name, '%')")
+   List<Doctor> findByNameLike(String name);
+
+   @Query("Select d from Doctor d " + 
+         "where lower(d.name) like lower(concat('%', :name, '%')) " +
+         "and lower(d.speciality) = lower(:speciality)")
+   List<Doctor> findByNameContainingIgnoreCaseAndSpecialityIgnoreCase(String name, String speciality);
+
+   @Query("Select d from Doctor d " + 
+         "where lower(d.speciality) = lower(:speciality)")
+   List<Doctor> findBySpecialityIgnoreCase(String speciality);
+
    // 1. Extend JpaRepository:
 //    - The repository extends JpaRepository<Doctor, Long>, which gives it basic CRUD functionality.
 //    - This allows the repository to perform operations like save, delete, update, and find without needing to implement these methods manually.

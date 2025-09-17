@@ -118,14 +118,7 @@ button:hover{
     background-color: #003e3e;
 }
 
-.header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 40px;
-  background-color: #015c5d;
-  color: white;
-}
+
 
 .header .logo{
   font-size: 1.5rem;
@@ -144,15 +137,7 @@ button:hover{
     color: #A62B1F;
 }
 
-.footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background-color: #003e3e;
-    color: white;
-    flex-wrap: wrap; 
-}
+
 
 input.input-field,
 select.select-dropdown {
