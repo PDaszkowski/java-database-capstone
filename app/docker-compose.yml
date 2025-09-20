@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: smart-clinic-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Lidrenus221!
+      MYSQL_DATABASE: cms
+    ports:
+      - "3307:3306"  # Zmieniony port na 3307
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  mongodb:
+    image: mongo:7.0
+    container_name: smart-clinic-mongo
+    ports:
+      - "27018:27017"  # Zmieniony port na 27018
+    volumes:
+      - mongo_data:/data/db
+
+  app:
+    build: .
+    container_name: smart-clinic-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/cms?usessl=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=Lidrenus221!
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/prescriptions
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+
+volumes:
+  mysql_data:
+  mongo_data:
