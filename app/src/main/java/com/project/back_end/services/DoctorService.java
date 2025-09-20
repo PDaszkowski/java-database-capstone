@@ -139,9 +139,9 @@ public class DoctorService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> filterDoctorsByNameSpecialityandTime(String name, String speciality, String amOrPm)
+    public Map<String, Object> filterDoctorsByNameSpecialtyandTime(String name, String specialty, String amOrPm)
     {
-        List<Doctor> doctors = doctorRepository.findByNameContainingIgnoreCaseAndSpecialityIgnoreCase(name, speciality);
+        List<Doctor> doctors = doctorRepository.findByNameContainingIgnoreCaseAndSpecialtyIgnoreCase(name, specialty);
         doctors = filterDoctorByTime(doctors, amOrPm);
         return Map.of("doctors", doctors);
     }
@@ -155,24 +155,24 @@ public class DoctorService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> filterDoctorByNameAndSpeciality(String name, String speciality)
+    public Map<String, Object> filterDoctorByNameAndSpecialty(String name, String specialty)
     {
-        List<Doctor> doctors = doctorRepository.findByNameContainingIgnoreCaseAndSpecialityIgnoreCase(name, speciality);
+        List<Doctor> doctors = doctorRepository.findByNameContainingIgnoreCaseAndSpecialtyIgnoreCase(name, specialty);
         return Map.of("doctors", doctors);
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> filterDoctorByTimeAndSpeciality(String speciality, String amOrPm)
+    public Map<String, Object> filterDoctorByTimeAndSpecialty(String specialty, String amOrPm)
     {
-        List<Doctor> doctors = doctorRepository.findBySpecialityIgnoreCase(speciality);
+        List<Doctor> doctors = doctorRepository.findBySpecialtyIgnoreCase(specialty);
         doctors = filterDoctorByTime(doctors, amOrPm);
         return Map.of("doctors", doctors);
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> filterDoctorBySpeciality(String speciality)
+    public Map<String, Object> filterDoctorBySpecialty(String specialty)
     {
-        List<Doctor> doctors = doctorRepository.findBySpecialityIgnoreCase(speciality);
+        List<Doctor> doctors = doctorRepository.findBySpecialtyIgnoreCase(specialty);
         return Map.of("doctors", doctors);
     }
 
@@ -185,14 +185,19 @@ public class DoctorService {
     }
 
     @Transactional(readOnly = true)
-    public List<Doctor> filterDoctorByTime(List<Doctor> doctors, String amOrPm)
-    {
-        return doctors.stream().filter(d -> d.getAvailableTimes().stream().anyMatch(time -> {
-            int hour = Integer.parseInt(time.split(":")[0]);
-            if("AM".equals(amOrPm)) return hour < 12;
-            else return hour>=12;
-        })).collect(Collectors.toList());
+public List<Doctor> filterDoctorByTime(List<Doctor> doctors, String amOrPm) {
+    if ("all".equalsIgnoreCase(amOrPm)) {
+        return doctors;
     }
+    
+    return doctors.stream()
+        .filter(d -> d.getAvailableTimes().stream()
+            .anyMatch(time -> {
+                int hour = Integer.parseInt(time.split(":")[0]);
+                return "AM".equalsIgnoreCase(amOrPm) ? hour < 12 : hour >= 12;
+            }))
+        .collect(Collectors.toList());
+}
     
 
 

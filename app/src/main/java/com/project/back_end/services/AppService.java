@@ -75,10 +75,10 @@ public class AppService {
         }
     }
 
-    public Map<String, Object> filterDoctor(String name, String speciality, String time)
+    public Map<String, Object> filterDoctor(String name, String specialty, String time)
     {
         Map<String, Object> result = new HashMap<>();
-        result.put("doctors", doctorService.filterDoctorsByNameSpecialityandTime(name, speciality, time));
+        result.put("doctors", doctorService.filterDoctorsByNameSpecialtyandTime(name, specialty, time));
         return result;
     }
 

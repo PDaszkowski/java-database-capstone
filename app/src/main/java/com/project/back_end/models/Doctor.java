@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +28,8 @@ public class Doctor {
 
     @NotNull
     @Size(min = 3, max = 50)
-    private String speciality;
+    @Column(name = "specialty")
+    private String specialty;
 
     @NotNull
     @Email(message = "email should follow only valid format: e.g., doctor@example.com")
@@ -55,9 +57,9 @@ public class Doctor {
         return this.name;
     }
 
-    public String getSpeciality()
+    public String getSpecialty()
     {
-        return this.speciality;
+        return this.specialty;
     }
 
     public String getEmail()
@@ -91,9 +93,9 @@ public class Doctor {
         this.name = name;
     }
 
-    public void setSpeciality(String speciality)
+    public void setSpecialty(String specialty)
     {
-        this.speciality = speciality;
+        this.specialty = specialty;
     }
 
     public void setEmail(String email)

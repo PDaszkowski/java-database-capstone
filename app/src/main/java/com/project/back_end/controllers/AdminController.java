@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,15 +23,27 @@ public class AdminController {
     private final AppService appService;
 
     @Autowired
-    public AdminController(AppService appService)
-    {
+    public AdminController(AppService appService) {
         this.appService = appService;
     }
 
-    @PostMapping("/login")
+    @PostMapping
     public ResponseEntity<Map<String, String>> adminLogin(@RequestBody Admin admin)
     {
         return appService.validateAdmin(admin);
+    }
+
+
+    @GetMapping("/dashboard/{token}")
+    public String adminDashboard(@PathVariable String token)
+    {
+        Map<String, String> map=appService.validateToken(token,"admin").getBody();
+        if(map==null)
+        {
+            return "admin/adminDashboard";
+        }
+        return "redirect:http://localhost:8080/"; 
+        
     }
 
 

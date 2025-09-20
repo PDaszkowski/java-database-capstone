@@ -126,43 +126,57 @@ public class AppointmentService {
        return ResponseEntity.ok(Map.of("message", "Appointment cancelled successfully"));
     }
 
-    @Transactional
-    public Map<String, Object> getAppointment(String pname, LocalDate date, String token)
-    {
-        Map<String, Object> response = new HashMap<>();
+@Transactional
+public Map<String, Object> getAppointment(String pname, LocalDate date, String token) {
+    Map<String, Object> response = new HashMap<>();
 
-        if(!tokenService.validateToken(token, "doctor")){
-            response.put("message", "invalid Token");
-            response.put("appointments", List.of());
-            return response;
-        }
+    System.out.println("=== DEBUG getAppointment ===");
+    System.out.println("pname: " + pname);
+    System.out.println("date: " + date);
+    System.out.println("token: " + token.substring(0, 20) + "...");
 
-        String doctorEmail = tokenService.extractIdentifier(token);
-        Doctor doctor = doctorRepository.findByEmail(doctorEmail);
-        
-        if(doctor == null)
-        {
-            response.put("message", "Doctor not found");
-            response.put("appointments", List.of());
-            return response;
-        }
-        Long doctorId = doctor.getId();
-
-        LocalDateTime start = date.atStartOfDay();
-        LocalDateTime end = date.atTime(LocalTime.MAX);
-
-        List<Appointment> appointments = appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(doctorId, start, end);
-
-        if(pname!=null && !pname.isEmpty())
-        {
-            appointments = appointments.stream().filter(a -> a.getPatient().getName().toLowerCase().contains(pname.toLowerCase())).toList();
-        }
-
-        response.put("message", "Success");
-        response.put("appointments", appointments);
-
+    if(!tokenService.validateToken(token, "doctor")){
+        response.put("message", "invalid Token");
+        response.put("appointments", List.of());
         return response;
     }
+
+    String doctorEmail = tokenService.extractIdentifier(token);
+    Doctor doctor = doctorRepository.findByEmail(doctorEmail);
+    System.out.println("Doctor email: " + doctorEmail);
+    System.out.println("Doctor found: " + (doctor != null ? doctor.getName() : "null"));
+    
+    if(doctor == null) {
+        response.put("message", "Doctor not found");
+        response.put("appointments", List.of());
+        return response;
+    }
+    
+    Long doctorId = doctor.getId();
+    System.out.println("Doctor ID: " + doctorId);
+
+    LocalDateTime start = date.atStartOfDay();
+    LocalDateTime end = date.atTime(LocalTime.MAX);
+    System.out.println("Searching between: " + start + " and " + end);
+
+    List<Appointment> appointments = appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(doctorId, start, end);
+    System.out.println("Found appointments before filtering: " + appointments.size());
+    appointments.forEach(a -> System.out.println("Appointment: " + a.getId() + " at " + a.getAppointmentTime()));
+
+    if(pname != null && !pname.isEmpty() && !"null".equals(pname)) {
+        System.out.println("Filtering by patient name: " + pname);
+        appointments = appointments.stream()
+            .filter(a -> a.getPatient().getName().toLowerCase().contains(pname.toLowerCase()))
+            .toList();
+        System.out.println("Found appointments after filtering: " + appointments.size());
+    }
+
+    response.put("message", "Success");
+    response.put("appointments", appointments);
+    
+    System.out.println("Final response appointments count: " + appointments.size());
+    return response;
+}
 
     @Transactional
     public ResponseEntity<Map<String, String>> changeAppointmentStatus(Long appointmentId, int newStatus){

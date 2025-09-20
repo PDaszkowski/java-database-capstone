@@ -1,4 +1,4 @@
-INSERT INTO doctor (email, name, password, phone, speciality) VALUES
+INSERT INTO doctor (email, name, password, phone, specialty) VALUES
 ('dr.adams@example.com', 'Dr. Emily Adams', 'pass12345', '555-101-2020', 'Cardiologist'),
 ('dr.johnson@example.com', 'Dr. Mark Johnson', 'secure4567', '555-202-3030', 'Neurologist'),
 ('dr.lee@example.com', 'Dr. Sarah Lee', 'leePass987', '555-303-4040', 'Orthopedist'),

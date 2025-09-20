@@ -1,5 +1,4 @@
-/* This is the style sheet for the patientDashboard.html */
-  .card-actions {
+.card-actions {
     background-color: #244557;
     padding: 10px;
     text-align: center;
@@ -69,6 +68,9 @@
     color: #fff;
     border: none;
     cursor: pointer;
+    
+  
+    
   }
   .confirm-booking:hover {
     filter: brightness(1.2);

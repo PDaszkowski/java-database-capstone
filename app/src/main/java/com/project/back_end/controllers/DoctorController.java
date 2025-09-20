@@ -228,24 +228,42 @@ public class DoctorController {
         }
     }
 
-    @GetMapping("/filter/{name}/{time}/{speciality}")
-    public ResponseEntity<Map<String, Object>> filterDoctors(@PathVariable String name, @PathVariable String time, @PathVariable String speciality)
-    {
-        try {
-            Map<String, Object> result = doctorService.filterDoctorsByNameSpecialityandTime(name, speciality, time);
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("doctors", result.get("doctors"));
-
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-                "success", false,
-                "error", "Error has occurred while filtering doctors: " +e.getMessage()
-            ));
+@GetMapping("/filter/{name}/{time}/{specialty}")
+public ResponseEntity<Map<String, Object>> filterDoctors(
+        @PathVariable String name,
+        @PathVariable String time,
+        @PathVariable String specialty) {
+    try {
+        System.out.println("Received filter request - name: " + name + ", time: " + time + ", specialty: " + specialty); // Debug log
+        
+        Map<String, Object> result;
+        
+        // Handle "all" cases
+        if ("all".equalsIgnoreCase(name) && "all".equalsIgnoreCase(time) && "all".equalsIgnoreCase(specialty)) {
+            result = Map.of("doctors", doctorService.getDoctors());
+        } else if ("all".equalsIgnoreCase(time)) {
+            result = doctorService.filterDoctorByNameAndSpecialty(name, specialty);
+        } else if ("all".equalsIgnoreCase(specialty)) {
+            result = doctorService.filterDoctorByNameAndTime(name, time);
+        } else if ("all".equalsIgnoreCase(name)) {
+            result = doctorService.filterDoctorByTimeAndSpecialty(specialty, time);
+        } else {
+            result = doctorService.filterDoctorsByNameSpecialtyandTime(name, specialty, time);
         }
+
+        return ResponseEntity.ok(Map.of(
+            "success", true,
+            "doctors", result.get("doctors")
+        ));
+    } catch (Exception e) {
+        e.printStackTrace(); // Debug log
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(Map.of(
+                "success", false,
+                "error", "Error filtering doctors: " + e.getMessage()
+            ));
     }
+}
 
 
 

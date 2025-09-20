@@ -1,5 +1,6 @@
 package com.project.back_end.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -73,35 +74,89 @@ public class PatientService {
     }
     }
 
-    @Transactional(readOnly = true)
-    public ResponseEntity<Map<String, Object>> filterByCondition(String condition, Long id)
-    {
-        try {
-            int status;
-            if(condition.equalsIgnoreCase("past"))
-            {
-                status = 1;
-            }
-
-            else if (condition.equalsIgnoreCase("future")) 
-            {
-                status = 0;
-            }
-
-            else{
-                return ResponseEntity.badRequest().body(Map.of("message", "Invalid condition"));
-            }
-
-            List<Appointment> appointments = appointmentRepository.findByPatientIdAndStatus(id, status);
-            List<AppointmentDTO> dtoList = appointments.stream().map(AppointmentDTO::fromEntity).collect(Collectors.toList());
-
-            return ResponseEntity.ok(Map.of("appointments", dtoList));
-            
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Error filtering appointments"));
+@Transactional(readOnly = true)
+public ResponseEntity<Map<String, Object>> filterByCondition(String condition, Long patientId) {
+    try {
+        List<Appointment> appointments;
+        LocalDateTime now = LocalDateTime.now();
+        
+        switch(condition.toLowerCase()) {
+            case "all":
+                appointments = appointmentRepository.findByPatientId(patientId);
+                break;
+            case "upcoming":
+            case "future":
+                // Wizyty przyszłe: appointmentTime > NOW()
+                appointments = appointmentRepository.findByPatientId(patientId)
+                    .stream()
+                    .filter(app -> app.getAppointmentTime().isAfter(now))
+                    .collect(Collectors.toList());
+                break;
+            case "past":
+                // Wizyty przeszłe: appointmentTime < NOW()  
+                appointments = appointmentRepository.findByPatientId(patientId)
+                    .stream()
+                    .filter(app -> app.getAppointmentTime().isBefore(now))
+                    .collect(Collectors.toList());
+                break;
+            default:
+                return ResponseEntity.badRequest().body(Map.of("message", "Invalid condition: " + condition));
         }
+
+        List<AppointmentDTO> dtoList = appointments.stream()
+                                               .map(AppointmentDTO::fromEntity)
+                                               .sorted((a, b) -> a.getAppointmentTime().compareTo(b.getAppointmentTime()))
+                                               .collect(Collectors.toList());
+
+        return ResponseEntity.ok(Map.of("appointments", dtoList));
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                         .body(Map.of("message", "Error filtering appointments by condition"));
     }
-    
+}
+
+// POPRAW filterByDoctorAndCondition
+@Transactional(readOnly = true) 
+public ResponseEntity<Map<String, Object>> filterByDoctorAndCondition(String condition, String name, Long patientId) {
+    try {
+        List<Appointment> appointments;
+        LocalDateTime now = LocalDateTime.now();
+        
+        // Najpierw filtruj po nazwisku lekarza
+        List<Appointment> doctorFiltered = appointmentRepository
+            .findByPatientIdAndDoctor_NameContainingIgnoreCase(patientId, name);
+        
+        // Potem filtruj po czasie
+        switch(condition.toLowerCase()) {
+            case "all":
+                appointments = doctorFiltered;
+                break;
+            case "upcoming": 
+            case "future":
+                appointments = doctorFiltered.stream()
+                    .filter(app -> app.getAppointmentTime().isAfter(now))
+                    .collect(Collectors.toList());
+                break;
+            case "past":
+                appointments = doctorFiltered.stream()
+                    .filter(app -> app.getAppointmentTime().isBefore(now))
+                    .collect(Collectors.toList());
+                break;
+            default:
+                return ResponseEntity.badRequest().body(Map.of("message", "Invalid condition: " + condition));
+        }
+
+        List<AppointmentDTO> dtoList = appointments.stream()
+                                            .map(AppointmentDTO::fromEntity)
+                                            .sorted((a, b) -> a.getAppointmentTime().compareTo(b.getAppointmentTime()))
+                                            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(Map.of("appointments", dtoList));
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body(Map.of("message", "Error filtering appointments by doctor and condition"));
+    }
+}
     @Transactional(readOnly = true)
     public ResponseEntity<Map<String, Object>> filterByDoctor(String name, Long patientId) {
         try {
@@ -117,29 +172,6 @@ public class PatientService {
         }
     }
 
-    @Transactional(readOnly = true)
-    public ResponseEntity<Map<String, Object>> filterByDoctorAndCondition(String condition, String name, Long patientId) {
-        try {
-            int status;
-            if(condition.equalsIgnoreCase("past")) {
-                status = 1;
-            } else if (condition.equalsIgnoreCase("future")) {
-                status = 0;
-            } else {
-                return ResponseEntity.badRequest().body(Map.of("message", "Invalid condition"));
-            }
-
-            List<Appointment> appointments = appointmentRepository.findByPatientIdAndDoctor_NameContainingIgnoreCaseAndStatus(patientId, name, status);
-            List<AppointmentDTO> dtoList = appointments.stream()
-                                                .map(AppointmentDTO::fromEntity)
-                                                .collect(Collectors.toList());
-
-            return ResponseEntity.ok(Map.of("appointments", dtoList));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body(Map.of("message", "Error filtering appointments by doctor and condition"));
-        }
-    }
 
     @Transactional(readOnly = true)
     public ResponseEntity<Map<String, Object>> getPatientDetails(String token) {

@@ -10,7 +10,6 @@ import jakarta.validation.constraints.Size;
 public class Prescription {
 
   @Id
-  @NotNull
   private String id;
 
   @NotNull

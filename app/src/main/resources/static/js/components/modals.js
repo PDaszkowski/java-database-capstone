@@ -83,12 +83,12 @@ export function openModal(type) {
     document.getElementById("signupBtn").addEventListener("click", signupPatient);
   }
 
-  if (type === "patientLogin") {
-    document.getElementById("loginBtn").addEventListener("click", loginPatient);
+  if(type === "patientLogin"){
+    document.getElementById("loginBtn").addEventListener("click" , loginPatient);
   }
 
-  if (type === 'addDoctor') {
-    document.getElementById('saveDoctorBtn').addEventListener('click', adminAddDoctor);
+  if(type === 'addDoctor'){
+    document.getElementById('saveDoctorBtn').addEventListener('click' , adminAddDoctor);
   }
 
   if (type === 'adminLogin') {
@@ -97,12 +97,5 @@ export function openModal(type) {
 
   if (type === 'doctorLogin') {
     document.getElementById('doctorLoginBtn').addEventListener('click', doctorLoginHandler);
-  }
-}
-
-export function closeModal() {
-  const modal = document.getElementById('modal');
-  if (modal) {
-    modal.style.display = 'none';
   }
 }
