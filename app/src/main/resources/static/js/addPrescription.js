@@ -16,31 +16,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   const patientName= urlParams.get("patientName")
 
   if (heading) {
-    // Check if the mode is "view"
     if (mode === "view") {
-      // Change the text to "View Prescription for [Patient Name]"
       heading.innerHTML = `View <span>Prescription</span>`;
     } else {
-      // Otherwise, set it as "Add Prescription for [Patient Name]"
       heading.innerHTML = `Add <span>Prescription</span>`;
     }
   }
 
-
-  // Pre-fill patient name
   if (patientNameInput && patientName) {
     patientNameInput.value = patientName;
   }
 
-  // Fetch and pre-fill existing prescription if it exists
   if (appointmentId && token) {
     try {
       const response = await getPrescription(appointmentId, token);
       console.log("getPrescription :: ", response);
 
-      // Now, check if the prescription exists in the response and access it from the array
       if (response.prescription && response.prescription.length > 0) {
-        const existingPrescription = response.prescription[0]; // Access first prescription object
+        const existingPrescription = response.prescription[0]; 
         patientNameInput.value = existingPrescription.patientName || YOU;
         medicinesInput.value = existingPrescription.medication || "";
         dosageInput.value = existingPrescription.dosage || "";
@@ -52,14 +45,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
   if (mode === 'view') {
-    // Make fields read-only
     patientNameInput.disabled = true;
     medicinesInput.disabled = true;
     dosageInput.disabled = true;
     notesInput.disabled = true;
-    savePrescriptionBtn.style.display = "none";  // Hide the save button
+    savePrescriptionBtn.style.display = "none";  
   }
-  // Save prescription on button click
+
   savePrescriptionBtn.addEventListener('click', async (e) => {
     e.preventDefault();
 

@@ -45,12 +45,10 @@ function renderAppointments(appointments) {
 
   appointments.forEach(appointment => {
     console.log("Rendering appointment:", appointment);
-    
-    // Parsowanie daty i czasu
+
     const appointmentDate = appointment.appointmentDate || "Unknown Date";
     const appointmentTime = appointment.appointmentTimeOnly || appointment.appointmentTime || "Unknown Time";
-    
-    // Określenie czy wizyta jest w przyszłości czy przeszłości
+
     const appointmentDateTime = new Date(appointment.appointmentTime || appointment.appointmentDate + " " + appointmentTime);
     const now = new Date();
     const isPast = appointmentDateTime < now;
@@ -69,7 +67,6 @@ function renderAppointments(appointments) {
       </td>
     `;
 
-    // Dodaj event listener tylko dla edytowalnych wizyt
     if (!isPast && appointment.status == 0) {
       const actionBtn = tr.querySelector(".prescription-btn");
       actionBtn?.addEventListener("click", () => redirectToUpdatePage(appointment));
@@ -95,7 +92,6 @@ function redirectToUpdatePage(appointment) {
   }, 100);
 }
 
-// Event listeners dla filtrów
 const searchBar = document.getElementById("searchBar");
 const appointmentFilter = document.getElementById("appointmentFilter");
 
@@ -112,7 +108,6 @@ async function handleFilterChange() {
 
   console.log("Filter change - search:", searchBarValue, "filter:", filterValue);
 
-  // Jeśli nie ma tekstu wyszukiwania i wybrano "all appointments", pokaż oryginalne dane
   if (!searchBarValue && filterValue === "allAppointments") {
     renderAppointments(allAppointments);
     return;

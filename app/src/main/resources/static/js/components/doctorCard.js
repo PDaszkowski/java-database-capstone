@@ -1,4 +1,3 @@
-// js/components/doctorCard.js
 import { showBookingOverlay } from "../loggedPatient.js";
 import { deleteDoctor } from "../services/doctorServices.js"
 import { getPatientData } from "../services/patientServices.js";
@@ -7,7 +6,7 @@ export function createDoctorCard(doctor) {
   const card = document.createElement("div");
   card.classList.add("doctor-card");
   const role = localStorage.getItem("userRole")
-  // Doctor info container
+
   const infoDiv = document.createElement("div");
   infoDiv.classList.add("doctor-info");
 
@@ -28,7 +27,6 @@ export function createDoctorCard(doctor) {
   infoDiv.appendChild(email);
   infoDiv.appendChild(availability);
 
-  // Card actions (button area)
   const actionsDiv = document.createElement("div");
   actionsDiv.classList.add("card-actions");
 
@@ -85,7 +83,6 @@ export function createDoctorCard(doctor) {
     });
     actionsDiv.appendChild(bookNow);
   }
-  // Assemble the card
   card.appendChild(infoDiv);
   card.appendChild(actionsDiv);
 

@@ -1,4 +1,3 @@
-// header.js
 function renderHeader() {
   const headerDiv = document.getElementById("header");
 
@@ -32,7 +31,7 @@ function renderHeader() {
   if ((role === "loggedPatient" || role === "admin" || role === "doctor") && !token) {
     localStorage.removeItem("userRole");
     alert("Session expired or invalid login. Please log in again.");
-    window.location.href = "/"; // or a specific login page
+    window.location.href = "/"; 
     return;
   }
   else if (role === "admin") {
@@ -63,7 +62,6 @@ function renderHeader() {
 
 }
 
-// This function attaches listeners to the dynamically created buttons
 function attachHeaderButtonListeners() {
   const doctorBtn = document.getElementById("doctorBtn");
   if (doctorBtn) {

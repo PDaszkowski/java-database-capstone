@@ -12,14 +12,12 @@ document.getElementById("searchBar").addEventListener("input", (e) => {
   loadAppointments();
 });
 
-// Event Listener: Today's Appointments Button
 document.getElementById("todayButton").addEventListener("click", () => {
   selectedDate = new Date().toISOString().split('T')[0];
-  document.getElementById("datePicker").value = selectedDate; // Update date picker too
+  document.getElementById("datePicker").value = selectedDate; 
   loadAppointments();
 });
 
-// Event Listener: Date Picker
 document.getElementById("datePicker").addEventListener("change", (e) => {
   selectedDate = e.target.value;
   loadAppointments();

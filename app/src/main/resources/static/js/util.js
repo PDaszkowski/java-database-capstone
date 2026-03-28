@@ -1,5 +1,4 @@
-// util.js
-  function setRole(role) {
+function setRole(role) {
     localStorage.setItem("userRole", role);
   }
   

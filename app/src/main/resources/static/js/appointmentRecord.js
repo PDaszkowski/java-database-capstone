@@ -33,11 +33,9 @@ async function loadAppointments(filter = "upcoming") {
   });
 }
 
-// Handle filter change
 filterSelect.addEventListener("change", (e) => {
   const selectedFilter = e.target.value;
   loadAppointments(selectedFilter);
 });
 
-// Load upcoming appointments by default
 loadAppointments("upcoming");

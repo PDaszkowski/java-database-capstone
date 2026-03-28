@@ -1,4 +1,3 @@
-// doctorServices.js
 import { API_BASE_URL } from "../config/config.js";
 const DOCTOR_API = API_BASE_URL + '/doctor'
 export async function getDoctors() {
@@ -46,12 +45,11 @@ export async function getDoctors() {
 
 export async function filterDoctors(name, time, specialty) {
   try {
-    // Dodaj wartości domyślne dla parametrów
     const nameParam = name || "all";
     const timeParam = time || "all";
     const specialtyParam = specialty || "all";
     
-    console.log(`Filtering doctors with params: name=${nameParam}, time=${timeParam}, specialty=${specialtyParam}`); // Debug log
+    console.log(`Filtering doctors with params: name=${nameParam}, time=${timeParam}, specialty=${specialtyParam}`); 
     
     const response = await fetch(`${DOCTOR_API}/filter/${nameParam}/${timeParam}/${specialtyParam}`, {
       method: "GET",
@@ -62,7 +60,7 @@ export async function filterDoctors(name, time, specialty) {
 
     if (response.ok) {
       const data = await response.json();
-      console.log("Filtered doctors response:", data); // Debug log
+      console.log("Filtered doctors response:", data);
       return data;
     } else {
       console.error("Failed to fetch doctors:", response.statusText);

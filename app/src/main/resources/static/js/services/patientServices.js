@@ -1,7 +1,6 @@
 import { API_BASE_URL } from "../config/config.js";
 const PATIENT_API = API_BASE_URL + '/patient';
 
-// Pozostałe funkcje bez zmian...
 export async function patientSignup(data) {
   try {
     const response = await fetch(`${PATIENT_API}`, {
@@ -66,20 +65,17 @@ export async function getPatientAppointments(id, token) {
   }
 }
 
-// POPRAWIONA funkcja filterAppointments
 export async function filterAppointments(condition, name, token) {
   try {
-    // Mapowanie frontend → backend wartości
     let conditionParam;
     let nameParam = name || "all";
-    
-    // Poprawne mapowanie condition values
+
     switch(condition) {
       case "allAppointments":
         conditionParam = "all";
         break;
       case "future":
-        conditionParam = "upcoming";  // lub "future" - zależy od backend implementacji
+        conditionParam = "upcoming";  
         break;
       case "past":
         conditionParam = "past";
