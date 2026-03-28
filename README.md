@@ -30,7 +30,7 @@ cd java-database-capstone/app
 # Launch conteners
 docker compose up --build
 ```
-Application available under: [http://localhost:8080](http://localhost:8080)
+Application available via: [http://localhost:8080](http://localhost:8080)
 
 ### Stop and data reset
  
